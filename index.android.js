@@ -1,45 +1,45 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Navigator
 } from 'react-native';
+  
+import LookUp from './lookUp';
+import SelectDictionaries from './selectDictionaries';
 
 export default class Dictionary extends Component {
-  
+
   constructor(props) {
     super(props);
-    this.state = {saerchText: ''};
   }
-  
+
   render() {
-    return (
-      <View style={styles.container}>
-        <TextInput
-        style={{height: 40}}
-        placeholder="Type here to lookup!"
-        onChangeText={(search) => this.setState({searchText})}
+    return (   
+      <Navigator
+        initialRoute={{ 
+          name:'LookUp', 
+          index: 0,
+          initial: true,
+          passProps:{
+            dictionaries: []
+          }
+        }}
+        renderScene={this.renderScene}
       />
-      </View>
     );
   }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   
-});
+  renderScene(route, navigator) {
+    if(route.name == 'LookUp') {
+        return <LookUp navigator={navigator} {...route.passProps}/>
+    }
+    if(route.name == 'SelectDictionaries') {
+      return <SelectDictionaries navigator={navigator} {...route.passProps}/>
+    }
+  }
+}
 
 AppRegistry.registerComponent('Dictionary', () => Dictionary);
